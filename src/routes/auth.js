@@ -6,20 +6,20 @@ import User from '../models/User.js';
 const router = express.Router();
 
 
-router.post('/register', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     const user = new User({ email, password: hashedPassword });
     await user.save();
-    res.json({ email });
+    res.json({ message: 'User created successfully' });
   } catch(err) {
     res.status(500).json({ error: err.message });
   }
 })
 
-router.post("/login", async (req, res) => {
+router.post("/sign-in", async (req, res) => {
   const  { email, password } = req.body;
 
   try {

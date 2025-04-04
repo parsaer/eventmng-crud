@@ -1,17 +1,25 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const EventSchema = new mongoose.Schema({
   name: {
     type: String, 
     required: true, 
+    trim: true,  
   }, 
   date:  {
     type: Date, 
     required: true, 
+    validate: {
+      validator: function(value) {
+        return value > new Date();
+      }, 
+      message: "Event date must be in the future", 
+    },
   }, 
   capacity: {
     type: Number, 
-    required: true
+    required: true, 
+    min: [1, "Capacity must be at lest 1"], 
   }, 
   createdBy: {
     type: mongoose.Schema.Types.ObjectId, 
