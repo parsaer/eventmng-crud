@@ -43,7 +43,7 @@ router.get('/:eventId', authMiddleware, async (req, res) => {
 
   try {
     const event = await Event.findById(eventId).populate("attendees", "email");
-    if(!events) return res.status(404).json({ error: "event not found "});
+    if(!event) return res.status(404).json({ error: "event not found "});
 
     if(event.createdBy.toString() == userId) {
       return res.json({
