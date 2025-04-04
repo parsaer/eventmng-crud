@@ -156,13 +156,11 @@ router.post('/:eventId/join', authMiddleware, async(req, res)=> {
     const event = await Event.findById(eventId);
     if(!event) return res.status(404).json({error: "event not found"});
 
-    if(event.attendees.includes(userId)) {
+    if(event.attendees.includes(userId)) 
       return res.status(400).json({ error: "Already joined this event"});
-    }
 
-    if(event.attendees.length >= event.capacity) {
+    if(event.attendees.length >= event.capacity) 
       return res.status(400).json({ error: "event is full"});
-    }
 
     event.attendees.push(userId);
     await event.save();
