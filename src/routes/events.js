@@ -6,6 +6,38 @@ import User from '../models/User.js';
 const router = express.Router();
 const MAX_EVENTS_PER_USER = 3;
 
+
+// get events created by USER
+router.get('/my-events', authMiddleware, async(req, res)=> {
+  console.log("Decoded user from token:", req.user.id);
+  const userId = req.user.id;
+  try  {
+    const myEvents = await Event.find({ createdBy: userId }).populate("attendees", "email");
+    res.json(myEvents);
+  } catch(err) {
+    res.status(500).json({error:err.message});
+  }
+});
+
+
+// USER joined events
+router.get('/joined-events', authMiddleware, async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const joined = await Event.find({attendees: userId}).select("name date capacity attendees");
+
+      res.json(joined.map((event) => ({
+      name: event.name,
+      date: event.date,
+      capacity: event.capacity,
+      attendeesCount: event.attendees.length,
+    })));
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // create event
 router.post('/', authMiddleware, async (req, res) => {
   const { name, date, capacity } = req.body;
@@ -26,6 +58,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+
 // get all events -> no auth
 router.get('/', async (req, res)=> {
   try {
@@ -35,6 +68,7 @@ router.get('/', async (req, res)=> {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // get single event detail
 router.get('/:eventId', authMiddleware, async (req, res) => {
@@ -64,36 +98,6 @@ router.get('/:eventId', authMiddleware, async (req, res) => {
     });
   } catch(err) {
     res.status(500).json({error: err.message});
-  }
-});
-
-
-// get events created by USER
-router.get('/my-events', authMiddleware, async(req, res)=> {
-  const userId = req.user.id;
-  try  {
-    const myEvents = await Event.find({ createdBy: userId }).populate("attendees", "email");
-    res.json(myEvents);
-  } catch(err) {
-    res.status(500).json({error:err.message});
-  }
-});
-
-
-// USER joined events
-router.get('/joined-events', authMiddleware, async (req, res) => {
-  const userId = req.user.id;
-  try {
-    const joined = await Event.find({attendees: userId}).select("name date capacity attendees");
-
-      res.json(joined.map((event) => ({
-      name: event.name,
-      date: event.date,
-      capacity: event.capacity,
-      attendeesCount: event.attendees.length,
-    })));
-  } catch(err) {
-    res.status(500).json({ error: err.message });
   }
 });
 
