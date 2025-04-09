@@ -42,17 +42,8 @@ router.get('/users', authMiddleWare, adminMiddleWare, async(req, res) => {
   }
 });
 
-// get admin/usrs (emails)
-router.get('/users', authMiddleWare, adminMiddleWare, async(req, res) => {
-  try {
-    const users = await User.find().select("email isAdmin createdAt");
-    res.json(users);
-  } catch(err) {
-    res.status(500).json({error: err.message});
-  }
-});
 
-router.get('stats/events-count', authMiddleWare, adminMiddleWare, async(req, res) => {
+router.get('/stats/events-count', authMiddleWare, adminMiddleWare, async(req, res) => {
   try {
     const cnt = await Event.countDocuments();
     res.json(cnt);
@@ -65,7 +56,7 @@ router.get('stats/events-count', authMiddleWare, adminMiddleWare, async(req, res
 // get all events (admin)
 router.get('/events', authMiddleWare, adminMiddleWare, async(req, res) => {
   try {
-    const events  = await Event.find().populate("createdBy", "attendees", "email");
+    const events  = await Event.find().populate("createdBy", "email");
     res.json(events);
   } catch(err) {
     res.status(500).json({error: err.message});
