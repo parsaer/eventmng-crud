@@ -1,4 +1,8 @@
-
-- [ ] add global error handling mw (maybe not)
 - [ ] maybe organize env var
 - [ ] organize middleware -> less files
+- [ ] adding request validation? 
+- [ ] add a Dockerfile and docker compose 
+- [ ] maybe another route? /admin/analytics
+- [ ] ui ? 
+- [ ] email functionalites (reminder)
+- [ ] subscription tracker

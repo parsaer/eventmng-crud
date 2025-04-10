@@ -15,7 +15,7 @@ connectDB();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(arcjetMiddleWare)
+// app.use(arcjetMiddleWare)
 
 app.get('/', (req, res) => {
   res.send("Health check!");

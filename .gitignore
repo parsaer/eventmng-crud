@@ -21,3 +21,5 @@ build/
 .temp/
 tmp/
 out/
+
+todo.md

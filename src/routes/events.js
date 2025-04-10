@@ -7,6 +7,7 @@ const router = express.Router();
 const MAX_EVENTS_PER_USER = 3;
 
 
+
 // get events created by USER
 router.get('/my-events', authMiddleware, async(req, res)=> {
   console.log("Decoded user from token:", req.user.id);
